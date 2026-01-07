@@ -29,7 +29,7 @@ const Sidebar = () => {
   return (
     <aside
       className={cn(
-        "bg-foreground/10 shadow transition-all duration-300",
+        "bg-foreground/10 shadow border-r-[2px] border-primary/10 transition-all duration-300",
         collapsed ? "w-20" : "w-64"
       )}
     >
@@ -67,7 +67,7 @@ const Sidebar = () => {
                       className={cn(
                         "w-full justify-center px-0",
                         active
-                          ? "bg-blue-600 text-white dark:hover:bg-blue-700"
+                          ? "bg-primary text-black dark:hover:bg-primary dark:hover:text-black"
                           : "hover:bg-gray-200 dark:hover:bg-gray-700"
                       )}
                     >
