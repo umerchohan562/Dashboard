@@ -1,7 +1,9 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { routes } from "../components/routes";
-import { Moon, Sun } from "lucide-react";
+import { LogOut, Moon, Sun } from "lucide-react";
+import { Button } from "./ui/button";
+import useAuthStore from "@/common/stores/authStore";
 
 const Header = () => {
   const location = useLocation();
@@ -10,6 +12,7 @@ const Header = () => {
   const currentRoute = routes.find((r) => r.path === location.pathname);
   const pageTitle = currentRoute?.label || "Dashboard";
 
+  const { logout } = useAuthStore()
   // Dark mode state with localStorage persistence
   const [dark, setDark] = useState(() => {
     const stored = localStorage.getItem("theme");
@@ -36,13 +39,17 @@ const Header = () => {
       <h1 className="text-lg font-semibold text-gray-800 dark:text-white">
         {pageTitle}
       </h1>
-
-      <button
+      <div className="flex items-center gap-3">
+      <Button
         onClick={() => setDark(!dark)}
         className="p-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white transition"
       >
         {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-      </button>
+      </Button>
+      <Button onClick={() => logout()}>
+        <LogOut />
+      </Button>
+      </div>
     </header>
   );
 };

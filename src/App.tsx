@@ -1,32 +1,35 @@
 import { Routes, Route } from "react-router-dom";
 import DashboardLayout from "./layout/dashboardLayout";
 import { routes, RouteType } from "./components/routes";
+import ProtectedRoute from "./components/protectedRoutes";
+
+import Login from "./pages/Auth/login";
+import Signup from "./pages/Auth/signup";
 
 function App() {
   return (
     <Routes>
-      {/* Main dashboard layout */}
-      <Route path="/" element={<DashboardLayout />}>
-        {routes.map((route) => {
-          // Add main route if element exists
-          const mainRoute: RouteType[] = route.element
-            ? [route]
-            : [];
+      {/* ===== PUBLIC ROUTES ===== */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-          // Add children routes if exist
-          const childRoutes: RouteType[] = route.children || [];
+      {/* ===== PROTECTED ROUTES ===== */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<DashboardLayout />}>
+          {routes.map((route) => {
+            const mainRoute: RouteType[] = route.element ? [route] : [];
+            const childRoutes: RouteType[] = route.children || [];
+            const allRoutes = [...mainRoute, ...childRoutes];
 
-          // Combine main + children
-          const allRoutes = [...mainRoute, ...childRoutes];
-
-          return allRoutes.map((r) => (
-            <Route
-              key={r.path}
-              path={r.path === "/" ? "" : r.path.slice(1)}
-              element={r.element!} // safe because element exists
-            />
-          ));
-        })}
+            return allRoutes.map((r) => (
+              <Route
+                key={r.path}
+                path={r.path === "/" ? "" : r.path.slice(1)}
+                element={r.element!}
+              />
+            ));
+          })}
+        </Route>
       </Route>
     </Routes>
   );
