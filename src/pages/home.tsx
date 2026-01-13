@@ -8,6 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import { useEffect } from "react";
+import api from "@/lib/axios";
+import { Button } from "@/components/ui/button";
+import useUsersStore from "@/common/stores/usersStore";
 
 const stats = [
   { title: "Total Users", value: "1,245", progress: 70 },
@@ -15,13 +19,14 @@ const stats = [
   { title: "Revenue", value: "$12,430", progress: 85 },
 ];
 
-const recentUsers = [
-  { name: "John Doe", email: "john@example.com", status: "Active" },
-  { name: "Jane Smith", email: "jane@example.com", status: "Pending" },
-  { name: "Alex Brown", email: "alex@example.com", status: "Inactive" },
-];
-
 const Home = () => {
+
+  const {users, fetchUsers} = useUsersStore()
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -58,11 +63,11 @@ const Home = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentUsers.map((user) => (
+              {users.map((user) => (
                 <TableRow key={user.email}>
+                  <TableCell>{user.id}</TableCell>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

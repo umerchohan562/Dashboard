@@ -7,34 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Admin",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "User",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    name: "Alex Brown",
-    email: "alex@example.com",
-    role: "User",
-    status: "Inactive",
-  },
-];
+import useUsersStore from "@/common/stores/usersStore";
+import { useEffect } from "react";
 
 const Users = () => {
+
+  const {users, fetchUsers} = useUsersStore()
+
+  useEffect(() => {
+    fetchUsers();
+  }, [])
+
   return (
     <div className="p-6">
       <Card>
@@ -47,41 +31,18 @@ const Users = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>ID</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
               {users.map((user) => (
                 <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        user.status === "Active"
-                          ? "default"
-                          : user.status === "Pending"
-                          ? "secondary"
-                          : "destructive"
-                      }
-                    >
-                      {user.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                    <Button variant="destructive" size="sm">
-                      Delete
-                    </Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
